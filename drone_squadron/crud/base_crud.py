@@ -1,6 +1,6 @@
 from abc import ABCMeta
 
-from drone_squadron.engine import engine
+from drone_squadron.database.engine import engine
 
 
 class BaseCrud(metaclass=ABCMeta):
