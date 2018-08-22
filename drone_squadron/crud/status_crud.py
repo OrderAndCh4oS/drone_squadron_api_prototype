@@ -1,5 +1,5 @@
 from drone_squadron.crud.base_crud import BaseCrud
-from drone_squadron.enums import Status
+from drone_squadron.enums.status import Status
 from drone_squadron.schema import status
 
 

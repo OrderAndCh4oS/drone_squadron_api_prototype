@@ -9,8 +9,13 @@ POST http://localhost:5000/login
 Content-Type: application/json
 
 {
-  "username": "sean",
-  "password": "secret"
+  "username": "Sarcoma",
+  "password": "too_secret"
 }
+
+###
+
+GET http://localhost:5000/
+Accept: application/json
 
 ###

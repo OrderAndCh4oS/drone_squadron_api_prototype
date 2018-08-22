@@ -1,6 +1,7 @@
+import functools
 from html import escape
 
-from flask import request, session
+from flask import request, session, g
 
 from drone_squadron.api.drone_api import DroneApi
 from drone_squadron.api.gimbal_api import GimbalApi
@@ -12,31 +13,57 @@ from drone_squadron.api.thruster_api import ThrusterApi
 from drone_squadron.api.user_api import UserApi
 from drone_squadron.api.weapon_api import WeaponApi
 from drone_squadron.app import app
+from drone_squadron.crud.user_crud import UserCrud
+from drone_squadron.authentication.login import Authentication
 from drone_squadron.request.request_handler import RequestHandler
 from drone_squadron.response.json_response import json_response
 
 
+@app.before_request
+def load_logged_in_user():
+    user_id = session.get('user_id')
+
+    if user_id is None:
+        g.user = None
+    else:
+        with UserCrud() as crud:
+            g.user = crud.select_by_id(user_id).fetchone()
+
+
+def login_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return json_response({'error': 'Not logged in'}, 401)
+
+        return view(**kwargs)
+
+    return wrapped_view
+
+
 @app.route('/')
+@login_required
 def index():
-    if 'username' in session:
-        return json_response({'data': '%s is logged in' % escape(session['username'])})
-    return json_response({'error': 'Not logged in'})
+    return json_response({'data': '%s is logged in' % escape(g.user['username'])})
 
 
 @app.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         data = request.get_json()
-        if 'username' in session:
-            return json_response({'data': '%s is logged in' % escape(session['username'])})
-        session['username'] = data['username']
-        return json_response({'data': 'successfully logged in'})
+        user = Authentication.login(data['username'], data['password'])
+        if user:
+            session['user_id'] = user['id']
+            return json_response({'data': '%d is logged in' % session['user_id']})
+        else:
+            return json_response({'error': 'Invalid credentials'}, 401)
 
 
 @app.route('/logout')
 def logout():
-    session.pop('username', None)
-    return json_response({'data': 'success'})
+    session.pop('user_id', None)
+    g.user = None
+    return json_response({'data': 'Logged out'})
 
 
 @app.route('/user', methods=['GET', 'POST'])

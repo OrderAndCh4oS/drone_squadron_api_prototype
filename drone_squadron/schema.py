@@ -1,7 +1,7 @@
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey, Float, Enum, func, DateTime
 
 from drone_squadron.database.engine import engine
-from drone_squadron.enums import Status
+from drone_squadron.enums.status import Status
 
 metadata = MetaData()
 
