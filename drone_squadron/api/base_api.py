@@ -1,4 +1,4 @@
-from abc import ABCMeta, abstractmethod
+from abc import ABCMeta
 
 from sqlalchemy.engine import ResultProxy
 
@@ -20,7 +20,7 @@ class BaseApi(metaclass=ABCMeta):
             data = result.fetchone()
         return data
 
-    def post(self, data):
+    def post(self, data: object) -> object:
         with self.table() as crud:
             result = crud.insert(**data)  # type: ResultProxy
             last_id = result.inserted_primary_key

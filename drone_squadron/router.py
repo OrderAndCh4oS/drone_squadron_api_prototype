@@ -1,7 +1,7 @@
 import functools
 from html import escape
 
-from flask import request, session, g
+from flask import request, session, g, Blueprint
 
 from drone_squadron.api.drone_api import DroneApi
 from drone_squadron.api.gimbal_api import GimbalApi
@@ -12,17 +12,17 @@ from drone_squadron.api.steering_api import SteeringApi
 from drone_squadron.api.thruster_api import ThrusterApi
 from drone_squadron.api.user_api import UserApi
 from drone_squadron.api.weapon_api import WeaponApi
-from drone_squadron.app import app
-from drone_squadron.crud.user_crud import UserCrud
 from drone_squadron.authentication.login import Authentication
+from drone_squadron.crud.user_crud import UserCrud
 from drone_squadron.request.request_handler import RequestHandler
 from drone_squadron.response.json_response import json_response
 
+router = Blueprint('router', __name__)
 
-@app.before_request
+
+@router.before_request
 def load_logged_in_user():
     user_id = session.get('user_id')
-
     if user_id is None:
         g.user = None
     else:
@@ -41,13 +41,13 @@ def login_required(view):
     return wrapped_view
 
 
-@app.route('/')
+@router.route('/')
 @login_required
 def index():
     return json_response({'data': '%s is logged in' % escape(g.user['username'])})
 
 
-@app.route('/login', methods=['POST'])
+@router.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
         data = request.get_json()
@@ -59,68 +59,80 @@ def login():
             return json_response({'error': 'Invalid credentials'}, 401)
 
 
-@app.route('/logout')
+@router.route('/logout')
 def logout():
     session.pop('user_id', None)
     g.user = None
     return json_response({'data': 'Logged out'})
 
 
-@app.route('/user', methods=['GET', 'POST'])
+@router.route('/user', methods=['GET', 'POST'])
+@login_required
 def user_list():
     return RequestHandler.list(UserApi())
 
 
-@app.route('/user/<item_id>', methods=['GET', 'PUT', 'DELETE'])
+@router.route('/user/<item_id>', methods=['GET', 'PUT', 'DELETE'])
+@login_required
 def user_detail(item_id):
     return RequestHandler.detail(UserApi(), item_id)
 
 
-@app.route('/squadron', methods=['GET', 'POST'])
+@router.route('/squadron', methods=['GET', 'POST'])
+@login_required
 def squadron_list():
     return RequestHandler.list(SquadronApi())
 
 
-@app.route('/squadron/<item_id>', methods=['GET', 'PUT', 'DELETE'])
+@router.route('/squadron/<item_id>', methods=['GET', 'PUT', 'DELETE'])
+@login_required
 def squadron_detail(item_id):
     return RequestHandler.detail(SquadronApi(), item_id)
 
 
-@app.route('/drone', methods=['GET', 'POST'])
+@router.route('/drone', methods=['GET', 'POST'])
+@login_required
 def drone_list():
     return RequestHandler.list(DroneApi())
 
 
-@app.route('/drone/<item_id>', methods=['GET', 'PUT', 'DELETE'])
+@router.route('/drone/<item_id>', methods=['GET', 'PUT', 'DELETE'])
+@login_required
 def drone_detail(item_id):
     return RequestHandler.detail(DroneApi(), item_id)
 
 
-@app.route('/weapon', methods=['GET'])
+@router.route('/weapon', methods=['GET'])
+@login_required
 def weapon_list():
     return json_response(WeaponApi().get())
 
 
-@app.route('/round-type', methods=['GET'])
+@router.route('/round-type', methods=['GET'])
+@login_required
 def round_type_list():
     return json_response(RoundTypeApi().get())
 
 
-@app.route('/scanner', methods=['GET'])
+@router.route('/scanner', methods=['GET'])
+@login_required
 def scanner_list():
     return json_response(ScannerApi().get())
 
 
-@app.route('/steering', methods=['GET'])
+@router.route('/steering', methods=['GET'])
+@login_required
 def steering_list():
     return json_response(SteeringApi().get())
 
 
-@app.route('/thruster', methods=['GET'])
+@router.route('/thruster', methods=['GET'])
+@login_required
 def thruster_list():
     return json_response(ThrusterApi().get())
 
 
-@app.route('/gimbal', methods=['GET'])
+@router.route('/gimbal', methods=['GET'])
+@login_required
 def gimbal_list():
     return json_response(GimbalApi().get())

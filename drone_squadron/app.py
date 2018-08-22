@@ -1,5 +1,14 @@
 from flask import Flask
 
-app = Flask(__name__)
+from drone_squadron.router import router
 
-app.secret_key = b'\xca\xc2\x92)Z\\\tkL\xc0wC.U^\xaa'
+
+def register_blueprints(app):
+    app.register_blueprint(router)
+
+
+def create_app(config_filename=None):
+    app = Flask(__name__)
+    app.config.from_pyfile(config_filename)
+    register_blueprints(app)
+    return app
