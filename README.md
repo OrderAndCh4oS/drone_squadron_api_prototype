@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/sarcoma/drone_squadron_api_prototype.svg?branch=master)](https://travis-ci.org/sarcoma/drone_squadron_api_prototype)
-
+[![Build Status](https://travis-ci.org/sarcoma/drone_squadron_api_prototype.svg?branch=master)](https://travis-ci.org/sarcoma/drone_squadron_api_prototype) [![codecov](https://codecov.io/gh/sarcoma/drone_squadron_api_prototype/branch/master/graph/badge.svg)](https://codecov.io/gh/sarcoma/drone_squadron_api_prototype)
 # Drone Squadron API Prototype
 
 SQL Alchemy + Flask
