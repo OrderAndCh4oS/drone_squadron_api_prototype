@@ -1,7 +1,7 @@
 import pytest
 
-from database.database import Database
 from drone_squadron.app import create_app
+from drone_squadron.database.database import Database
 from drone_squadron.load_fixtures import LoadFixtures
 
 
