@@ -1,4 +1,5 @@
 from datetime import datetime
+from enum import Enum
 from functools import singledispatch
 
 from drone_squadron.transformer.transformer import Transformer
@@ -14,6 +15,7 @@ class JsonTransformer(Transformer):
         dictionary = {}
         for key, field in data.items():
             field = self.convert_datetime_to_string(field)
+            field = self.convert_enum(field)
             dictionary[key] = field
         return dictionary
 
@@ -26,4 +28,9 @@ class JsonTransformer(Transformer):
     def convert_datetime_to_string(self, field):
         if isinstance(field, datetime):
             field = field.strftime("%Y-%m-%d %H:%M:%S")
+        return field
+
+    def convert_enum(self, field):
+        if isinstance(field, Enum):
+            field = {field.name: field.value}
         return field

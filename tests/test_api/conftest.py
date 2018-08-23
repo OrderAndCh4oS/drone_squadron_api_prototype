@@ -1,6 +1,7 @@
 import pytest
 
 from drone_squadron.app import create_app
+from drone_squadron.load_fixtures import LoadFixtures
 
 
 @pytest.fixture(scope="session")
@@ -12,7 +13,7 @@ def setup():
     metadata.drop_all(engine)
 
 
-@pytest.fixture(scope='module')
+@pytest.fixture(scope='session')
 def test_client():
     flask_app = create_app('test_flask.cfg')
 
@@ -31,6 +32,8 @@ def test_client():
     )
 
     test_client.get('/logout')
+
+    LoadFixtures().load()
 
     yield test_client  # this is where the testing happens!
 
