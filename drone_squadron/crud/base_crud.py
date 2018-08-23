@@ -1,12 +1,12 @@
 from abc import ABCMeta
 
-from drone_squadron.database.engine import engine
+from drone_squadron.database.database import Database
 
 
 class BaseCrud(metaclass=ABCMeta):
     connection = None
 
-    def __init__(self, table, connection=None):
+    def __init__(self, table, connection):
         self.table = table
         self.action = None
         self.results = None
@@ -21,7 +21,7 @@ class BaseCrud(metaclass=ABCMeta):
 
     def connect(self):
         if self.connection is None:
-            self.connection = engine.connect()
+            self.connection = Database().get_connection()
 
     def select(self):
         return self.connection.execute(self.table.select())

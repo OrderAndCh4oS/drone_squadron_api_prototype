@@ -1,4 +1,4 @@
-from drone_squadron.database.engine import engine
+from drone_squadron.database.database import Database
 from drone_squadron.fixtures.gimbal_fixtures import gimbal_fixtures
 from drone_squadron.fixtures.round_type_fixtures import round_type_fixtures
 from drone_squadron.fixtures.scanner_fixtures import scanner_fixtures
@@ -32,6 +32,7 @@ if __name__ == '__main__':
     while user_input not in ('y', 'Y', 'n', 'N', ''):
         user_input = input('Do you want to drop all tables and reload the fixtures? (Y/n): ')
     if user_input in ('y', 'Y', ''):
+        engine = Database().get_engine()
         metadata.drop_all(engine)
         metadata.create_all(engine)
         LoadFixtures().load()

@@ -1,6 +1,6 @@
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey, Float, Enum, func, DateTime
 
-from drone_squadron.database.engine import engine
+from drone_squadron.database.database import Database
 from drone_squadron.enums.round_type import RoundType
 from drone_squadron.enums.status import Status
 
@@ -123,6 +123,7 @@ if __name__ == '__main__':
     while user_input not in ('y', 'Y', 'n', 'N', ''):
         user_input = input('Do you want to drop all tables and recreate the schema? (Y/n): ')
     if user_input in ('y', 'Y', ''):
+        engine = Database().get_engine()
         metadata.drop_all(engine)
         metadata.create_all(engine)
     else:
