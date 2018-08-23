@@ -20,11 +20,12 @@ class BaseApi(metaclass=ABCMeta):
             data = result.fetchone()
         return data
 
-    def post(self, data: object) -> object:
+    def post(self, data):
         with self.table() as crud:
             result = crud.insert(**data)  # type: ResultProxy
-            last_id = result.inserted_primary_key
-        return last_id
+            data = result.last_inserted_params()
+            data['id'] = result.inserted_primary_key[0]
+        return data
 
     def put(self, item_id, data):
         with self.table() as crud:
@@ -36,5 +37,4 @@ class BaseApi(metaclass=ABCMeta):
         with self.table() as crud:
             result = crud.delete(item_id=item_id)  # type: ResultProxy
             matched_rows = result.rowcount
-        return matched_rows
-
+        return {"deleted": matched_rows}

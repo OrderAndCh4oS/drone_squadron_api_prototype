@@ -14,7 +14,7 @@ from drone_squadron.api.user_api import UserApi
 from drone_squadron.api.weapon_api import WeaponApi
 from drone_squadron.authentication.login import Authentication
 from drone_squadron.crud.user_crud import UserCrud
-from drone_squadron.request.request_handler import RequestHandler
+from drone_squadron.request.request_handler import JsonRequestHandler
 from drone_squadron.response.json_response import json_response
 
 router = Blueprint('router', __name__)
@@ -47,6 +47,15 @@ def index():
     return json_response({'data': '%s is logged in' % escape(g.user['username'])})
 
 
+@router.route('/register', methods=['POST'])
+def register():
+    if request.method == 'POST':
+        data = UserApi().post(request.get_json())
+        session['user_id'] = data['id']
+
+        return JsonRequestHandler.post(UserApi())
+
+
 @router.route('/login', methods=['POST'])
 def login():
     if request.method == 'POST':
@@ -68,38 +77,38 @@ def logout():
 
 @router.route('/user', methods=['GET', 'POST'])
 @login_required
-def user_list():
-    return RequestHandler.list(UserApi())
+def users():
+    return JsonRequestHandler.get(UserApi())
 
 
 @router.route('/user/<item_id>', methods=['GET', 'PUT', 'DELETE'])
 @login_required
 def user_detail(item_id):
-    return RequestHandler.detail(UserApi(), item_id)
+    return JsonRequestHandler.detail(UserApi(), item_id)
 
 
 @router.route('/squadron', methods=['GET', 'POST'])
 @login_required
 def squadron_list():
-    return RequestHandler.list(SquadronApi())
+    return JsonRequestHandler.list(SquadronApi())
 
 
 @router.route('/squadron/<item_id>', methods=['GET', 'PUT', 'DELETE'])
 @login_required
 def squadron_detail(item_id):
-    return RequestHandler.detail(SquadronApi(), item_id)
+    return JsonRequestHandler.detail(SquadronApi(), item_id)
 
 
 @router.route('/drone', methods=['GET', 'POST'])
 @login_required
 def drone_list():
-    return RequestHandler.list(DroneApi())
+    return JsonRequestHandler.list(DroneApi())
 
 
 @router.route('/drone/<item_id>', methods=['GET', 'PUT', 'DELETE'])
 @login_required
 def drone_detail(item_id):
-    return RequestHandler.detail(DroneApi(), item_id)
+    return JsonRequestHandler.detail(DroneApi(), item_id)
 
 
 @router.route('/weapon', methods=['GET'])
