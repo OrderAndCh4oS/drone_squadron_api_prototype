@@ -22,7 +22,7 @@ class JsonRequestHandler:
     @staticmethod
     def delete(api, item_id):
         if request.method == 'DELETE':
-            return json_response(item_id, api.delete(request.get_json()))
+            return json_response(api.delete(item_id))
 
     @staticmethod
     def list(api):

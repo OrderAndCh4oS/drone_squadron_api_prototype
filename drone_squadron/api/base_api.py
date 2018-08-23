@@ -37,4 +37,4 @@ class BaseApi(metaclass=ABCMeta):
         with self.table() as crud:
             result = crud.delete(item_id=item_id)  # type: ResultProxy
             matched_rows = result.rowcount
-        return {"deleted": matched_rows}
+        return {"deleted_rows": matched_rows}

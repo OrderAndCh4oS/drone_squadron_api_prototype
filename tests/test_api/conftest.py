@@ -24,6 +24,30 @@ def test_client():
     context = flask_app.app_context()
     context.push()
 
+    test_client.post(
+        '/register',
+        json={"username": "Sarcoma", "password": "password"},
+        content_type="application/json"
+    )
+
+    test_client.get('/logout')
+
     yield test_client  # this is where the testing happens!
 
     context.pop()
+
+
+@pytest.fixture()
+def log_in(setup, test_client):
+    response = test_client.post(
+        '/login',
+        json={"username": "Sarcoma", "password": "password"},
+        content_type="application/json"
+    )
+    assert response.status_code == 200
+
+
+@pytest.fixture()
+def log_out(setup, test_client):
+    response = test_client.get('/logout')
+    assert response.status_code == 200
