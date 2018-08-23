@@ -41,6 +41,19 @@ def login_required(view):
     return wrapped_view
 
 
+def admin_required(view):
+    @functools.wraps(view)
+    def wrapped_view(**kwargs):
+        if g.user is None:
+            return json_response({'error': 'Not logged in'}, 401)
+        if 'admin' not in g.roles:
+            return json_response({'error': 'Not authorized'}, 401)
+
+        return view(**kwargs)
+
+    return wrapped_view
+
+
 @router.route('/')
 @login_required
 def index():
