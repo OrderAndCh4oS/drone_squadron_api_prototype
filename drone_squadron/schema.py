@@ -1,6 +1,7 @@
 from sqlalchemy import Table, Column, Integer, String, MetaData, ForeignKey, Float, Enum, func, DateTime
 
 from drone_squadron.database.engine import engine
+from drone_squadron.enums.round_type import RoundType
 from drone_squadron.enums.status import Status
 
 metadata = MetaData()
@@ -68,6 +69,7 @@ round_type = Table(
     metadata,
     Column('id', Integer, primary_key=True),
     Column('name', String(12)),
+    Column('type', Enum(RoundType)),
     Column('speed', Float),
     Column('radius', Float),
     Column('colour', String(12)),

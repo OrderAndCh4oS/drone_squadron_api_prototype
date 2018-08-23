@@ -14,7 +14,7 @@ from drone_squadron.api.user_api import UserApi
 from drone_squadron.api.weapon_api import WeaponApi
 from drone_squadron.authentication.login import Authentication
 from drone_squadron.crud.user_crud import UserCrud
-from drone_squadron.request.request_handler import JsonRequestHandler
+from drone_squadron.request.json_request_handler import JsonRequestHandler
 from drone_squadron.response.json_response import json_response
 
 router = Blueprint('router', __name__)
