@@ -3,6 +3,7 @@ from html import escape
 
 from flask import request, session, g, Blueprint
 
+from api.price_api import PriceApi
 from drone_squadron.api.drone_api import DroneApi
 from drone_squadron.api.gimbal_api import GimbalApi
 from drone_squadron.api.round_type_api import RoundTypeApi
@@ -158,3 +159,9 @@ def thruster_list():
 @login_required
 def gimbal_list():
     return json_response(GimbalApi().get())
+
+
+@router.route('/price-list', methods=['GET'])
+@login_required
+def price_list():
+    return json_response(PriceApi().get())
