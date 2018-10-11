@@ -48,7 +48,7 @@ def admin_required(view):
         if g.user is None:
             return json_response({'error': 'Not logged in'}, 401)
         if 'admin' not in g.roles:
-            return json_response({'error': 'Not authorized'}, 401)
+            return json_response({'error': 'Not authorized'}, 403)
 
         return view(**kwargs)
 
@@ -77,7 +77,13 @@ def login():
         user = Authentication.login(data['username'], data['password'])
         if user:
             session['user_id'] = user['id']
-            return json_response({'data': '%d is logged in' % session['user_id']})
+            return json_response({
+                'user': {
+                    'id': '%d' % g.user['id'],
+                    'username': '%s' % g.user['username'],
+                    'created_at': '%s' % g.user['created_at']
+                }
+            })
         else:
             return json_response({'error': 'Invalid credentials'}, 401)
 
