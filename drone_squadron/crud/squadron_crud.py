@@ -6,6 +6,13 @@ class SquadronCrud(BaseCrud):
     def __init__(self, connection=None):
         super().__init__(squadron, connection)
 
+    def spend_scrap(self, squadron_id, cost):
+        statement = squadron.update() \
+            .values(scrap=(squadron.c.scrap - cost)) \
+            .where(squadron.c.id == squadron_id)
+
+        return self.connection.execute(statement)
+
 
 if __name__ == '__main__':
     with SquadronCrud() as crud:
