@@ -79,9 +79,9 @@ def login():
             session['user_id'] = user['id']
             return json_response({
                 'user': {
-                    'id': '%d' % g.user['id'],
-                    'username': '%s' % g.user['username'],
-                    'created_at': '%s' % g.user['created_at']
+                    'id': '%d' % user['id'],
+                    'username': '%s' % user['username'],
+                    'created_at': '%s' % user['created_at']
                 }
             })
         else:
@@ -117,6 +117,12 @@ def squadron_list():
 @login_required
 def squadron_detail(item_id):
     return JsonRequestHandler.detail(SquadronApi(), item_id)
+
+
+@router.route('/squadron/<squadron_id>/drone', methods=['GET'])
+@login_required
+def squadron_drone_list(squadron_id):
+    return json_response(DroneApi().get_by_squadron_id(squadron_id))
 
 
 @router.route('/drone', methods=['GET', 'POST'])
