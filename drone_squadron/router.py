@@ -67,7 +67,7 @@ def register():
         data = UserApi().post(request.get_json())
         session['user_id'] = data['id']
 
-        return JsonRequestHandler.post(UserApi())
+        return json_response(data)
 
 
 @router.route('/login', methods=['POST'])
