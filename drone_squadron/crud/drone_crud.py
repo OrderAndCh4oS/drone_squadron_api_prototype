@@ -6,6 +6,11 @@ class DroneCrud(BaseCrud):
     def __init__(self, connection=None):
         super().__init__(drone, connection)
 
+    def select_by_squadron_id(self, squadron_id):
+        return self.connection.execute(
+            self.table.select().where(self.table.c.squadron == squadron_id)
+        )
+
 
 if __name__ == '__main__':
     with DroneCrud() as crud:
