@@ -2,22 +2,26 @@ from drone_squadron.database.database import Database
 from drone_squadron.fixtures.gimbal_fixtures import gimbal_fixtures
 from drone_squadron.fixtures.round_type_fixtures import round_type_fixtures
 from drone_squadron.fixtures.scanner_fixtures import scanner_fixtures
+from drone_squadron.fixtures.status_fixtures import status_fixtures
 from drone_squadron.fixtures.steering_fixtures import steering_fixtures
 from drone_squadron.fixtures.thruster_fixtures import thruster_fixtures
+from drone_squadron.fixtures.user_fixtures import user_fixtures
 from drone_squadron.fixtures.weapon_fixtures import weapon_fixtures
 from drone_squadron.schema import metadata
 
 
 class LoadFixtures:
     def __init__(self):
-        self.fixtures = [
+        self.fixtures = (
+            user_fixtures,
             round_type_fixtures,
             weapon_fixtures,
             scanner_fixtures,
             thruster_fixtures,
             steering_fixtures,
-            gimbal_fixtures
-        ]
+            gimbal_fixtures,
+            status_fixtures
+        )
 
     def load(self):
         for fixture in self.fixtures:

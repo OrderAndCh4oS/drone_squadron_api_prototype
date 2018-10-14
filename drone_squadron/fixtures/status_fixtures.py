@@ -1,6 +1,6 @@
-from drone_squadron.crud.steering_crud import SteeringCrud
+from drone_squadron.crud.status_crud import StatusCrud
 
-steering_fixtures = (SteeringCrud, [
+status_fixtures = (StatusCrud, [
     {"value": "ready"},
     {"value": "damaged"},
     {"value": "repairing"},
