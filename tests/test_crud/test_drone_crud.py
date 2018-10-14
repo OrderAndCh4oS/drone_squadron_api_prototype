@@ -17,7 +17,6 @@ class TestDroneCrud:
                 steering=1,
                 scanner=1,
                 squadron=1,
-                status=0
             )  # type: ResultProxy
             assert 1 == result.inserted_primary_key[0]
 
