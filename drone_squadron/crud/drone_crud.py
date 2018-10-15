@@ -46,6 +46,7 @@ class DroneCrud(BaseCrud):
         )
 
     def update(self, **kwargs):
+        # Todo squadron should not be in kwargs to begin with refactor to remove
         kwargs.pop('squadron')
         item_id = kwargs.pop('item_id')
 
