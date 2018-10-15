@@ -3,7 +3,8 @@ from sqlalchemy.engine import ResultProxy
 from drone_squadron.api.base_api import BaseApi
 from drone_squadron.crud.drone_crud import DroneCrud
 from drone_squadron.crud.squadron_crud import SquadronCrud
-from service.calculate_cost import calculate_cost
+from drone_squadron.exception.exceptions import APIException
+from drone_squadron.service.calculate_cost import calculate_cost
 
 
 class DroneApi(BaseApi):
@@ -13,6 +14,12 @@ class DroneApi(BaseApi):
     def post(self, data):
         drone_cost = 50
         cost = calculate_cost(data) + drone_cost
+        squadron = SquadronCrud().select_by_id(data.get('squadron')).fetchone()
+        # Todo: should throw errors
+        if not squadron:
+            raise APIException("Squadron not found")
+        if squadron.scrap < cost:
+            raise APIException("Not enough scrap")
         SquadronCrud().spend_scrap(data.get('squadron'), cost)
         with self.table() as crud:
             result = crud.insert(**data)  # type: ResultProxy
