@@ -69,7 +69,7 @@ class TestDrone:
         )
         data = response.get_json()
         assert response.status_code == 200
-        assert {'id_1': '1', 'name': 'Drone Two'} == data
+        assert {'id_1': '1', 'name': 'Drone Two', "squadron": 1} == data
 
     def test_delete(self, log_in, test_client):
         response = test_client.delete('/drone/1')

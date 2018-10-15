@@ -29,7 +29,7 @@ class TestDroneCrud:
     def test_update(self, setup):
         with self.crud() as crud:
             result = crud.update(item_id=1, squadron=1, name="Drone Two")  # type: ResultProxy
-            assert {'id_1': 1, "name": "Drone Two"} == result.last_updated_params()
+            assert {'id_1': 1, "name": "Drone Two", "squadron": 1} == result.last_updated_params()
 
     def test_delete(self, setup):
         with self.crud() as crud:
