@@ -43,11 +43,11 @@ class DroneCrud(BaseCrud):
         return self.connection.execute(
             drone.insert(),
             squadron=squadron_id,
-            weapon=kwargs.get('weapon', 1),
-            gimbal=kwargs.get('gimbal', 1),
-            thruster=kwargs.get('thruster', 1),
-            steering=kwargs.get('steering', 1),
-            scanner=kwargs.get('scanner', 1),
+            weapon=kwargs.pop('weapon') if 'weapon' in kwargs else 1,
+            gimbal=kwargs.pop('gimbal') if 'gimbal' in kwargs else 1,
+            thruster=kwargs.pop('thruster') if 'thruster' in kwargs else 1,
+            steering=kwargs.pop('steering') if 'steering' in kwargs else 1,
+            scanner=kwargs.pop('scanner') if 'scanner' in kwargs else 1,
             value=cost,
             **kwargs
         )
@@ -69,7 +69,9 @@ class DroneCrud(BaseCrud):
         for item_type in item_types:
             if item_type in kwargs:
                 price = self.price.select_by_type_and_related_id(item_type, kwargs.get(item_type))
-                cost = cost + price.fetchone().scrap
+                item = price.fetchone()
+                if item:
+                    cost = cost + item.scrap
         return cost
 
     def select_by_squadron_id(self, squadron_id):
