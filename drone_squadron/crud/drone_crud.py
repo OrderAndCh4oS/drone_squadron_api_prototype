@@ -35,44 +35,15 @@ class DroneCrud(BaseCrud):
         )
 
     def insert(self, **kwargs):
-        drone_cost = 50
-        squadron_id = kwargs.pop('squadron')
-        item_cost = self.calculate_cost(kwargs)
-        cost = item_cost + drone_cost
-        self.squadron.spend_scrap(squadron_id, cost)
         return self.connection.execute(
             drone.insert(),
-            squadron=squadron_id,
             weapon=kwargs.pop('weapon') if 'weapon' in kwargs else 1,
             gimbal=kwargs.pop('gimbal') if 'gimbal' in kwargs else 1,
             thruster=kwargs.pop('thruster') if 'thruster' in kwargs else 1,
             steering=kwargs.pop('steering') if 'steering' in kwargs else 1,
             scanner=kwargs.pop('scanner') if 'scanner' in kwargs else 1,
-            value=cost,
             **kwargs
         )
-
-    def update(self, **kwargs):
-        squadron_id = kwargs.pop('squadron')
-        item_id = kwargs.pop('item_id')
-        cost = self.calculate_cost(kwargs)
-        self.squadron.spend_scrap(squadron_id, cost)
-        # Todo: calculate and update drone value
-        return self.connection.execute(
-            drone.update().where(drone.c.id == item_id),
-            **kwargs
-        )
-
-    def calculate_cost(self, kwargs):
-        cost = 0
-        item_types = ('weapon', 'gimbal', 'scanner', 'thruster', 'steering')
-        for item_type in item_types:
-            if item_type in kwargs:
-                price = self.price.select_by_type_and_related_id(item_type, kwargs.get(item_type))
-                item = price.fetchone()
-                if item:
-                    cost = cost + item.scrap
-        return cost
 
     def select_by_squadron_id(self, squadron_id):
         return self.connection.execute(
