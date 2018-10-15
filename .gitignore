@@ -166,5 +166,4 @@ venv.bak/
 # mypy
 .mypy_cache/
 
-**/drones_test.db
 **/drones.db
