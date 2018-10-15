@@ -1,8 +1,8 @@
 from sqlalchemy import select
 
-from crud.price_crud import PriceCrud
-from crud.squadron_crud import SquadronCrud
 from drone_squadron.crud.base_crud import BaseCrud
+from drone_squadron.crud.price_crud import PriceCrud
+from drone_squadron.crud.squadron_crud import SquadronCrud
 from drone_squadron.schema import drone, weapon, steering, thruster, gimbal, scanner
 
 

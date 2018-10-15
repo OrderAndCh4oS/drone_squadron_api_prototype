@@ -1,8 +1,8 @@
 from sqlalchemy.engine import ResultProxy
 
-from crud.squadron_crud import SquadronCrud
 from drone_squadron.api.base_api import BaseApi
 from drone_squadron.crud.drone_crud import DroneCrud
+from drone_squadron.crud.squadron_crud import SquadronCrud
 from service.calculate_cost import calculate_cost
 
 
