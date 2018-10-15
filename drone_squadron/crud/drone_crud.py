@@ -45,6 +45,15 @@ class DroneCrud(BaseCrud):
             **kwargs
         )
 
+    def update(self, **kwargs):
+        kwargs.pop('squadron')
+        item_id = kwargs.pop('item_id')
+
+        return self.connection.execute(
+            drone.update().where(drone.c.id == item_id),
+            **kwargs
+        )
+
     def select_by_squadron_id(self, squadron_id):
         return self.connection.execute(
             select([
