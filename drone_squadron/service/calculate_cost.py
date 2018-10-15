@@ -1,4 +1,4 @@
-from crud.price_crud import PriceCrud
+from drone_squadron.crud.price_crud import PriceCrud
 
 
 def calculate_cost(data):
