@@ -3,7 +3,7 @@ from sqlalchemy.engine import ResultProxy
 from drone_squadron.api.base_api import BaseApi
 from drone_squadron.crud.drone_crud import DroneCrud
 from drone_squadron.crud.squadron_crud import SquadronCrud
-from drone_squadron.exception.exceptions import APIException
+from drone_squadron.error.error import APIError, ValidationError
 from drone_squadron.service.calculate_cost import calculate_cost
 
 
@@ -14,13 +14,17 @@ class DroneApi(BaseApi):
     def post(self, data):
         drone_cost = 50
         cost = calculate_cost(data) + drone_cost
-        squadron = SquadronCrud().select_by_id(data.get('squadron')).fetchone()
-        # Todo: should throw errors
+        with SquadronCrud() as crud:
+            result = crud.select_by_id(data.get('squadron'))  # type: ResultProxy
+            squadron = result.fetchone()
+        if not data.get('name') or len(data.get('name')) == 0:
+            return ValidationError('Validation Error', {"name": "Must provide"})
         if not squadron:
-            raise APIException("Squadron not found")
+            return APIError("Squadron not found")
         if squadron.scrap < cost:
-            raise APIException("Not enough scrap")
-        SquadronCrud().spend_scrap(data.get('squadron'), cost)
+            return APIError("Not enough scrap")
+        with SquadronCrud() as crud:
+            crud.spend_scrap(data.get('squadron'), cost)
         with self.table() as crud:
             result = crud.insert(**data)  # type: ResultProxy
             data = result.last_inserted_params()
@@ -29,6 +33,13 @@ class DroneApi(BaseApi):
 
     def put(self, item_id, data):
         cost = calculate_cost(data)
+        with SquadronCrud() as crud:
+            result = crud.select_by_id(data.get('squadron'))  # type: ResultProxy
+            squadron = result.fetchone()
+        if not squadron:
+            raise APIError("Squadron not found")
+        if squadron['scrap'] < cost:
+            raise APIError("Not enough scrap")
         SquadronCrud().spend_scrap(data.get('squadron'), cost)
         with self.table() as crud:
             result = crud.update(item_id=item_id, **data)  # type: ResultProxy
