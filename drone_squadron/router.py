@@ -140,40 +140,40 @@ def drone_detail(item_id):
 @router.route('/weapon', methods=['GET'])
 @login_required
 def weapon_list():
-    return json_response(WeaponApi().get())
+    return JsonRequestHandler.get(WeaponApi())
 
 
 @router.route('/round-type', methods=['GET'])
 @login_required
 def round_type_list():
-    return json_response(RoundTypeApi().get())
+    return JsonRequestHandler.get(RoundTypeApi())
 
 
 @router.route('/scanner', methods=['GET'])
 @login_required
 def scanner_list():
-    return json_response(ScannerApi().get())
+    return JsonRequestHandler.get(ScannerApi())
 
 
 @router.route('/steering', methods=['GET'])
 @login_required
 def steering_list():
-    return json_response(SteeringApi().get())
+    return JsonRequestHandler.get(SteeringApi())
 
 
 @router.route('/thruster', methods=['GET'])
 @login_required
 def thruster_list():
-    return json_response(ThrusterApi().get())
+    return JsonRequestHandler.get(ThrusterApi())
 
 
 @router.route('/gimbal', methods=['GET'])
 @login_required
 def gimbal_list():
-    return json_response(GimbalApi().get())
+    return JsonRequestHandler.get(GimbalApi())
 
 
 @router.route('/price-list', methods=['GET'])
 @login_required
 def price_list():
-    return json_response(PriceApi().get())
+    return JsonRequestHandler.get(PriceApi())
