@@ -5,6 +5,7 @@ from drone_squadron.crud.drone_crud import DroneCrud
 from drone_squadron.crud.squadron_crud import SquadronCrud
 from drone_squadron.error.error import APIError, ValidationError
 from drone_squadron.service.calculate_cost import calculate_cost
+from model.drone_model import DroneModel
 
 
 class DroneApi(BaseApi):
@@ -14,15 +15,9 @@ class DroneApi(BaseApi):
     def post(self, data):
         drone_cost = 50
         cost = calculate_cost(data) + drone_cost
-        with SquadronCrud() as crud:
-            result = crud.select_by_id(data.get('squadron'))  # type: ResultProxy
-            squadron = result.fetchone()
-        if not data.get('name') or len(data.get('name')) == 0:
-            return ValidationError('Validation Error', {"name": "Must provide"})
-        if not squadron:
-            return APIError("Squadron not found")
-        if squadron.scrap < cost:
-            return APIError("Not enough scrap")
+        model = DroneModel(data.get('name'), (data.get('squadron'), cost))
+        if not model.validate():
+            return ValidationError(model.get_errors())
         with SquadronCrud() as crud:
             crud.spend_scrap(data.get('squadron'), cost)
         with self.table() as crud:
