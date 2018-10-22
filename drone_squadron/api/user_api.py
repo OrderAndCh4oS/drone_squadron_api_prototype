@@ -9,7 +9,7 @@ class UserApi(BaseApi):
         super().__init__(UserCrud)
 
     def post(self, data):
-        with self.table() as crud:
+        with self.crud() as crud:
             result = crud.insert(**data)  # type: ResultProxy
             data = result.last_inserted_params()
             data.pop('password')

@@ -15,8 +15,12 @@ class SquadronApi(BaseApi):
         model = SquadronModel(data.get('name'), data.get('scrap'))
         if not model.validate():
             return ValidationError(model.get_errors())
-        with SquadronCrud() as crud:
+        with self.crud() as crud:
             result = crud.insert(**data)  # type: ResultProxy
             data = result.last_inserted_params()
             data['id'] = result.inserted_primary_key[0]
         return data
+
+    def spend_scrap(self, squadron_id, cost):
+        with self.crud() as crud:
+            crud.spend_scrap(squadron_id, cost)
