@@ -3,7 +3,7 @@ from abc import ABCMeta, abstractmethod
 
 class ValidationAbstract(metaclass=ABCMeta):
 
-    def __init__(self, error_message: str):
+    def __init__(self, error_message: str = 'Unknown error'):
         self.error_message = error_message
 
     def __call__(self, field):
