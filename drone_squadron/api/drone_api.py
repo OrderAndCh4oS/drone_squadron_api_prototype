@@ -1,12 +1,12 @@
 from sqlalchemy.engine import ResultProxy
 
-from api.squadron_api import SquadronApi
 from drone_squadron.api.base_api import BaseApi
+from drone_squadron.api.squadron_api import SquadronApi
 from drone_squadron.crud.drone_crud import DroneCrud
 from drone_squadron.crud.squadron_crud import SquadronCrud
 from drone_squadron.error.error import ValidationError
+from drone_squadron.model.drone_model import DroneModel
 from drone_squadron.service.calculate_cost import calculate_cost
-from model.drone_model import DroneModel
 
 
 class DroneApi(BaseApi):
