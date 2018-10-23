@@ -1,7 +1,7 @@
 from sqlalchemy.engine import ResultProxy
 
-from crud.squadron_crud import SquadronCrud
-from validation.abstract.validation_abstract import ValidationAbstract
+from drone_squadron.crud.squadron_crud import SquadronCrud
+from drone_squadron.validation.abstract.validation_abstract import ValidationAbstract
 
 
 class SquadCanAffordPurchase(ValidationAbstract):
