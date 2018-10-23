@@ -1,7 +1,7 @@
 from sqlalchemy.engine import ResultProxy
 
-from crud.drone_crud import DroneCrud
-from crud.squadron_crud import SquadronCrud
+from drone_squadron.crud.drone_crud import DroneCrud
+from drone_squadron.crud.squadron_crud import SquadronCrud
 
 
 class TestDrone:
