@@ -1,7 +1,7 @@
 from drone_squadron.model.base_model import BaseModel
+from drone_squadron.validation.drone_validation import SquadCanAffordPurchase
 from drone_squadron.validation.field import Field
 from drone_squadron.validation.validations import IsRequired, IsString, MinLength, MaxLength
-from validation.drone_validation import SquadCanAffordPurchase
 
 
 class DroneModel(BaseModel):
