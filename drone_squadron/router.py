@@ -149,6 +149,12 @@ def round_type_list():
     return JsonRequestHandler.get(RoundTypeApi())
 
 
+@router.route('/round-type/<item_id>', methods=['GET'])
+@login_required
+def round_type_detail(item_id):
+    return JsonRequestHandler.detail(RoundTypeApi(), item_id)
+
+
 @router.route('/scanner', methods=['GET'])
 @login_required
 def scanner_list():
