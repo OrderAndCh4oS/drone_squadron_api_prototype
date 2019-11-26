@@ -33,6 +33,6 @@ class ItemCrud(BaseCrud, metaclass=ABCMeta):
             self.price_crud.update(
                 item_id=item_id,
                 scrap=scrap,
-                type=self.table_name
+                item_type=self.table_name
             )
         return result
