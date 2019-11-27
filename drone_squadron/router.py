@@ -79,7 +79,7 @@ def login():
             session['user_id'] = user['id']
             return json_response({
                 'user': {
-                    'id': '%d' % user['id'],
+                    'id': user['id'],
                     'username': '%s' % user['username'],
                     'created_at': '%s' % user['created_at']
                 }
