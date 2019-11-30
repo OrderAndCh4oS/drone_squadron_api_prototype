@@ -1,7 +1,7 @@
 from abc import ABCMeta, abstractmethod
 
 
-class BaseModel(metaclass=ABCMeta):
+class BaseValidationModel(metaclass=ABCMeta):
 
     def __init__(self):
         self._errors = {}

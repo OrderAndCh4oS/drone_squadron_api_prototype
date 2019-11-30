@@ -3,7 +3,7 @@ from sqlalchemy.engine import ResultProxy
 from drone_squadron.api.base_api import BaseApi
 from drone_squadron.crud.squadron_crud import SquadronCrud
 from drone_squadron.error.error import ValidationError
-from drone_squadron.model.squadron_model import SquadronModel
+from drone_squadron.validation_model.squadron_validation_model import SquadronValidationModel
 
 
 class SquadronApi(BaseApi):
@@ -12,7 +12,7 @@ class SquadronApi(BaseApi):
 
     def post(self, data):
         data['scrap'] = 1000
-        model = SquadronModel(data.get('name'), data.get('scrap'))
+        model = SquadronValidationModel(data.get('name'), data.get('scrap'))
         if not model.validate():
             return ValidationError(model.get_errors())
         with self.crud() as crud:

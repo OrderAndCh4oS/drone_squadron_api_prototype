@@ -1,9 +1,9 @@
-from drone_squadron.model.base_model import BaseModel
+from drone_squadron.validation_model.base_validation_model import BaseValidationModel
 from drone_squadron.validation.field import Field
 from drone_squadron.validation.validations import IsRequired, IsString, MinLength, MaxLength, MinValue, MaxValue
 
 
-class SquadronModel(BaseModel):
+class SquadronValidationModel(BaseValidationModel):
 
     def __init__(self, name, scrap):
         super().__init__()

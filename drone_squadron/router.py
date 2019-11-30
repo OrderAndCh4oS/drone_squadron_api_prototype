@@ -137,6 +137,12 @@ def drone_detail(item_id):
     return JsonRequestHandler.detail(DroneApi(), item_id)
 
 
+@router.route('/drone/<item_id>/end-of-game-update', methods=['PUT'])
+@login_required
+def drone_update(item_id):
+    return json_response(DroneApi().end_of_game_update(item_id, request.get_json()))
+
+
 @router.route('/weapon', methods=['GET'])
 @login_required
 def weapon_list():

@@ -3,7 +3,8 @@ from sqlalchemy import select
 from drone_squadron.crud.base_crud import BaseCrud
 from drone_squadron.crud.price_crud import PriceCrud
 from drone_squadron.crud.squadron_crud import SquadronCrud
-from drone_squadron.schema import drone, weapon, steering, thruster, gimbal, scanner
+from drone_squadron.schema import drone, weapon, steering, thruster, gimbal, scanner, status
+from enums.status import Status
 
 
 class DroneCrud(BaseCrud):
@@ -24,13 +25,15 @@ class DroneCrud(BaseCrud):
                 gimbal.c.name.label('gimbal_name'),
                 thruster.c.name.label('thruster_name'),
                 steering.c.name.label('steering_name'),
-                scanner.c.name.label('scanner_name')
+                scanner.c.name.label('scanner_name'),
+                status.c.value.label('status_value')
             ])
                 .select_from(drone.join(weapon)
                              .join(gimbal)
                              .join(thruster)
                              .join(steering)
-                             .join(scanner))
+                             .join(scanner)
+                             .join(status, drone.c.status == status.c.id))
                 .where(drone.c.id == item_id)
         )
 
@@ -47,7 +50,8 @@ class DroneCrud(BaseCrud):
 
     def update(self, **kwargs):
         # Todo squadron should not be in kwargs to begin with refactor to remove
-        kwargs.pop('squadron')
+        if 'squadron' in kwargs.keys():
+            kwargs.pop('squadron')
         item_id = kwargs.pop('item_id')
 
         return self.connection.execute(
@@ -67,13 +71,15 @@ class DroneCrud(BaseCrud):
                 gimbal.c.name.label('gimbal_name'),
                 thruster.c.name.label('thruster_name'),
                 steering.c.name.label('steering_name'),
-                scanner.c.name.label('scanner_name')
+                scanner.c.name.label('scanner_name'),
+                status.c.value.label('status_value')
             ])
                 .select_from(drone.join(weapon)
                              .join(gimbal)
                              .join(thruster)
                              .join(steering)
-                             .join(scanner))
+                             .join(scanner)
+                             .join(status, drone.c.status == status.c.id))
                 .where(drone.c.squadron == squadron_id)
         )
 
@@ -101,7 +107,7 @@ if __name__ == '__main__':
             item_id=last_id,
             name="Test",
             weapon=1,
-            squadron=1
+            squadron=1,
         )
         updated_params = result.last_updated_params()
         print("Update:", updated_params)

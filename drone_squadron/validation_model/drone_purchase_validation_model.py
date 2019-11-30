@@ -1,10 +1,10 @@
-from drone_squadron.model.base_model import BaseModel
+from drone_squadron.validation_model.base_validation_model import BaseValidationModel
 from drone_squadron.validation.drone_validation import SquadCanAffordPurchase
 from drone_squadron.validation.field import Field
 from drone_squadron.validation.validations import IsRequired, IsString, MinLength, MaxLength
 
 
-class DroneModel(BaseModel):
+class DronePurchaseValidationModel(BaseValidationModel):
 
     def __init__(self, name, squad, cost):
         super().__init__()
