@@ -48,17 +48,18 @@ class DroneApi(BaseApi):
     def end_of_game_update(self, item_id, data):
         drone = self.get_by_id(item_id)
         kills = drone.kills + data.pop('kills')
+        missions = drone.missions + 1
         status = data.pop('status')
         if status not in Status.__members__:
             return {"Error": "Not a valid status"}
             # Todo: Handle validation of status
 
-        print(Status[status].value)
         with self.crud() as crud:
             result = crud.update(
                 item_id=item_id,
                 kills=kills,
                 status=Status[status].value,
+                missions=missions,
                 **data
             )  # type: ResultProxy
             data = result.last_updated_params()
@@ -66,7 +67,6 @@ class DroneApi(BaseApi):
 
 
 if __name__ == '__main__':
-    print(Status['destroyed'].value)
     """
         Statuses:
         ready = 1,
@@ -74,6 +74,5 @@ if __name__ == '__main__':
         repairing = 3,
         destroyed = 4,
         upgrading = 5,
-
     """
     print(DroneApi().end_of_game_update(1, {"kills": 3, "status": "ready"}))
