@@ -45,6 +45,7 @@ class DroneCrud(BaseCrud):
             thruster=kwargs.pop('thruster') if 'thruster' in kwargs else 1,
             steering=kwargs.pop('steering') if 'steering' in kwargs else 1,
             scanner=kwargs.pop('scanner') if 'scanner' in kwargs else 1,
+            status=kwargs.pop('status') if 'status' in kwargs else 1,
             **kwargs
         )
 

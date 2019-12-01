@@ -75,4 +75,5 @@ if __name__ == '__main__':
         destroyed = 4,
         upgrading = 5,
     """
-    print(DroneApi().end_of_game_update(1, {"kills": 3, "status": "ready"}))
+    print(DroneApi().post({"name": "qqqqq", "squadron": 9}))
+    # print(DroneApi().end_of_game_update(1, {"kills": 3, "status": "ready"}))
