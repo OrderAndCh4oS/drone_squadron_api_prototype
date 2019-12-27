@@ -2,6 +2,7 @@ import enum
 
 
 class RoundType(enum.Enum):
-    shot = 0,
-    seven_six_two = 1,
-    nine_mm = 2,
+    nine_mm = 1,
+    shot = 2,
+    seven_six_two = 3,
+    four_five = 4,

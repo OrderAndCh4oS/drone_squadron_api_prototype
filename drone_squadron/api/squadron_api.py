@@ -11,7 +11,7 @@ class SquadronApi(BaseApi):
         super().__init__(SquadronCrud)
 
     def post(self, data):
-        data['scrap'] = 1000
+        data['scrap'] = 300
         model = SquadronValidationModel(data.get('name'), data.get('scrap'))
         if not model.validate():
             return ValidationError(model.get_errors())

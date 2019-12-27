@@ -24,9 +24,18 @@ round_type_fixtures = (RoundTypeCrud, [
         "name": "SevenSixTwo",
         "type": RoundType.seven_six_two,
         "radius": 3,
-        "damage": 22,
-        "speed": 55,
+        "damage": 18,
+        "speed": 60,
         "colour": "red",
+        "scrap": 0
+    },
+    {
+        "name": "FourFive",
+        "type": RoundType.four_five,
+        "radius": 2,
+        "damage": 11,
+        "speed": 55,
+        "colour": "blue",
         "scrap": 0
     }
 ])

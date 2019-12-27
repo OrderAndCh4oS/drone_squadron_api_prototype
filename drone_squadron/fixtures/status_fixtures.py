@@ -5,4 +5,5 @@ status_fixtures = (StatusCrud, [
     {"value": "damaged"},
     {"value": "repairing"},
     {"value": "destroyed"},
+    {"value": "upgrading"},
 ])
